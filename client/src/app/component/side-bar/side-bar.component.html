@@ -1,0 +1,5 @@
+<aside class="sidebar">
+  <ul class="sidebar-menu">
+    <li *ngFor="let item of menuItems" [routerLink]="(item.withParams && externalUsername) ? [item.path, externalUsername] : [item.path]" routerLinkActive="active">{{item.label}}</li>
+  </ul>
+</aside>

@@ -1,0 +1,64 @@
+<app-side-bar [externalUsername]="externalUsername"></app-side-bar>
+<form [formGroup]="contactInfoForm">
+  <div class="contact-form-container">
+    <h2 class="form-title">CONTACT INFORMATION</h2>
+
+    <div class="form-group">
+      <label>ADDRESS</label>
+      <input type="text" formControlName="address" placeholder="Address">
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>SUB DISTRICT</label>
+        <select formControlName="sub_district"
+          [ngClass]="{ 'text-muted': !contactInfoForm.get('sub_district')?.value }">
+          <option value="" disabled>Please select</option>
+          <option *ngFor="let subDistrictData of subdistrictsList" [value]="subDistrictData.name_th">
+            {{subDistrictData.name_th}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>District</label>
+        <select formControlName="district" [ngClass]="{ 'text-muted': !contactInfoForm.get('district')?.value }">
+          <option value="" disabled>Please select</option>
+          <option *ngFor="let districtsData of districtsList" [value]="districtsData.name_th">{{ districtsData.name_th}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Province</label>
+        <select formControlName="province" [ngClass]="{ 'text-muted': !contactInfoForm.get('province')?.value }">
+          <option value="" disabled>Please select</option>
+          <option *ngFor="let provincesData of provincesList" [value]="provincesData.name_th">{{ provincesData.name_th}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>POSTAL CODE</label>
+        <select formControlName="postal_code" [ngClass]="{ 'text-muted': !contactInfoForm.get('postal_code')?.value }">
+          <option value="" disabled>Please select</option>
+          <option *ngFor="let zipcodeData of zipcodeList" [value]="zipcodeData">{{zipcodeData}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>FACEBOOK</label>
+        <input type="text" formControlName="facebook">
+      </div>
+      <div class="form-group">
+        <label>LINE ID</label>
+        <input type="text" formControlName="line_id">
+      </div>
+      <div class="form-group">
+        <label>INSTAGRAM</label>
+        <input type="text" formControlName="instagram">
+      </div>
+    </div>
+    <div class="footter-form">
+      <button type="button" class="btn btn-primary" (click)="onSubmit()" [hidden]="isReadOnly">Save</button>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,323 @@
+.section-container {
+  margin-left: 15vw;
+  padding: 20px;
+  background-color: #fff;
+
+  .section-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 25px;
+    color: #000;
+  }
+
+  .timeline-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 20px; // ขยับมาด้านขวาเล็กน้อยเพื่อให้ปุ่มดูเด่น
+
+    .btn-add-function {
+      background: transparent;
+      border: 1px solid #4ebbc6; // สีฟ้าอมเขียวตามรูป
+      color: #4ebbc6;
+      border-radius: 20px;
+      padding: 4px 15px;
+      font-size: 0.7rem;
+      cursor: pointer;
+      margin-bottom: 5px;
+      margin-left: 15px; // ให้กึ่งกลางตรงกับเส้น timeline
+      transform: translateX(-25%); // จัดให้ปุ่มอยู่กึ่งกลางเส้นพอดี
+
+      &:hover {
+        background-color: rgba(78, 187, 198, 0.1);
+      }
+    }
+  }
+
+  .timeline-content-education {
+    position: relative;
+    padding-top: 10px;
+
+    // สร้างเส้นแนวดิ่ง
+    &::before {
+      content: "";
+      position: absolute;
+      left: 47.5px; // ปรับตำแหน่งให้ตรงกับจุด
+      top: 0;
+      bottom: 15px; // ให้เส้นจบก่อนถึงรายการสุดท้ายนิดหน่อย
+      width: 1px;
+      background-color: #ccc;
+    }
+
+    .timeline-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 12px;
+      position: relative;
+
+      .year {
+        width: 30px;
+        font-size: 0.75rem;
+        color: #888;
+        text-align: right;
+      }
+
+      .dot {
+        width: 6px;
+        height: 6px;
+        background-color: #2c8ebf; // สีน้ำเงินเข้มตามรูป
+        border-radius: 50%;
+        z-index: 1; // ให้อยู่ทับเส้น
+      }
+
+      .location {
+        font-size: 0.75rem;
+        color: #888;
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  .timeline-content-experience {
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 47.5px; // ปรับตำแหน่งให้ตรงกับจุด
+      top: 0;
+      bottom: 15px; // ให้เส้นจบก่อนถึงรายการสุดท้ายนิดหน่อย
+      width: 2px;
+      background-color: #ccc;
+    }
+
+    .timeline-item {
+      display: flex;
+      align-items: flex-start;
+      margin: 15px;
+      position: relative;
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        background-color: #2c8ebf;
+        border-radius: 50%;
+        position: absolute;
+        left: 29.5px; // จัดให้อยู่กึ่งกลางเส้นพอดี (กึ่งกลางของความกว้างจุด)
+        top: 20px;
+        z-index: 1;
+      }
+
+      .input-wrapper {
+        margin-left: 50px;
+        position: relative;
+        width: 100%;
+        max-width: 400px; // ปรับความกว้างตามต้องการ
+
+        input {
+          width: 300px;
+          padding: 5px 30px 15px 10px; // เผื่อที่ด้านล่างสำหรับ sub-text และด้านขวาสำหรับ x
+          border: 1px solid #999;
+          border-radius: 10px;
+          font-size: 0.8rem;
+          color: #333;
+          box-sizing: border-box;
+
+          &:focus {
+            outline: none;
+            border-color: #666;
+          }
+        }
+
+        .sub-text {
+          position: absolute;
+          left: 10px;
+          bottom: 5px;
+          font-size: 0.6rem;
+          color: #aaa;
+          pointer-events: none;
+        }
+
+        .btn-remove {
+          position: absolute;
+          right: 10px;
+          top: 50%;
+          transform: translateY(-50%);
+          background: none;
+          border: none;
+          color: #333;
+          font-weight: bold;
+          cursor: pointer;
+          font-size: 1rem;
+          padding: 0;
+          line-height: 1;
+
+          &:hover {
+            color: #ff0000;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Skill Information */
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 25px;
+  color: #000;
+}
+
+.skill-content-wrapper {
+  padding-left: 20px;
+
+  .btn-add-function {
+    background: transparent;
+    border: 1px solid #4ebbc6;
+    color: #4ebbc6;
+    border-radius: 20px;
+    padding: 4px 15px;
+    font-size: 0.7rem;
+    cursor: pointer;
+    margin-bottom: 15px;
+
+    &:hover {
+      background-color: rgba(78, 187, 198, 0.1);
+    }
+  }
+}
+
+.skill-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 500px; // ปรับความกว้างตามหน้าจอ
+
+  .skill-item {
+    display: flex;
+    align-items: center;
+
+    .skill-name {
+      flex: 2; // สัดส่วนพื้นที่ชื่อสกิล
+      font-size: 0.8rem;
+      color: #888;
+      text-transform: lowercase;
+    }
+
+    .skill-score {
+      flex: 1; // สัดส่วนพื้นที่ตัวเลข
+      font-size: 0.8rem;
+      color: #888;
+      text-align: center;
+    }
+
+    .progress-bg {
+      flex: 3; // สัดส่วนพื้นที่แถบพลัง
+      height: 10px;
+      background-color: #eee;
+      border-radius: 5px;
+      overflow: hidden;
+      position: relative;
+
+      .progress-fill {
+        height: 100%;
+        background-color: #5da0e3; // สีฟ้าตามรูป
+        border-radius: 5px;
+      }
+    }
+  }
+}
+
+/* Interests & GUILD Information */
+.section-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 25px;
+  color: #000;
+}
+
+.section-content-wrapper {
+  padding-left: 20px;
+
+  .btn-add-function {
+    background: transparent;
+    border: 1px solid #4ebbc6;
+    color: #4ebbc6;
+    border-radius: 20px;
+    padding: 4px 15px;
+    font-size: 0.7rem;
+    cursor: pointer;
+    margin-bottom: 15px;
+
+    &:hover {
+      background-color: rgba(78, 187, 198, 0.1);
+    }
+  }
+}
+
+.section-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  .badge-tag {
+    display: flex;
+    align-items: center;
+    background-color: #4ebbc6; // สีฟ้าอมเขียวตามรูป
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 20px;
+    gap: 8px;
+
+    span {
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .btn-remove-tag {
+      background: none;
+      border: none;
+      color: #fff;
+      padding: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+
+      svg {
+        width: 14px;
+        height: 14px;
+        opacity: 0.8;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.field label {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.field input,
+.field select {
+  padding: 8px 4px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+}

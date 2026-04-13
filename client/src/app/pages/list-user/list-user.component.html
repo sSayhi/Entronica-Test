@@ -1,0 +1,37 @@
+<div class="container">
+  <div class="header-section">
+    <h2><span>👥</span> List-User</h2>
+    <button class="btn-add" routerLink="/entronica/user-info">+ AddUser</button>
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>ชื่อ - นามสกุล</th>
+          <th>ชื่อเล่น</th>
+          <th>ตำแหน่ง</th>
+          <th class="text-center">การจัดการ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of Datalist; let i = index">
+          <td>{{i+1}}</td>
+          <td>{{user.firstname}} {{user.lastname}}</td>
+          <td>{{user.nickname}} </td>
+          <td>{{user.position}}</td>
+          <td class="text-center">
+            <button class="action-btn view" title="ดูรายละเอียด" (click)="onRowClick(user.username)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

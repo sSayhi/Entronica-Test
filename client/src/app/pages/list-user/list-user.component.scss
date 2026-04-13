@@ -1,0 +1,91 @@
+// Variables
+$primary: #6366f1;
+$secondary: #64748b;
+$success: #22c55e;
+$bg-light: #f8fafc;
+$white: #ffffff;
+$text-main: #1e293b;
+
+body {
+  background-color: $bg-light;
+  font-family: 'Sarabun', sans-serif; // ใช้ฟอนต์ไทยให้ดูเป็นมืออาชีพ
+  padding: 2rem;
+}
+
+.container {
+  max-width: 1000px;
+  margin: auto;
+  background: $white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+
+  .header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+
+    h2 { margin: 0; color: $text-main; font-size: 1.25rem; }
+    
+    .btn-add {
+      background: $primary;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      &:hover { opacity: 0.9; }
+    }
+  }
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    
+    th {
+      background: #f1f5f9;
+      color: $secondary;
+      padding: 12px 15px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+    }
+
+    td {
+      padding: 15px;
+      border-bottom: 1px solid #f1f5f9;
+      color: $text-main;
+      vertical-align: middle;
+    }
+
+    .text-center { text-align: center; }
+
+    tbody tr:hover {
+      background-color: #f8faff;
+    }
+  }
+}
+
+// Action Button (ลูกตา)
+.action-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  color: $secondary;
+
+  &.view:hover {
+    background-color: rgba($primary, 0.1);
+    color: $primary;
+    transform: scale(1.1);
+  }
+}

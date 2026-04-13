@@ -1,0 +1,86 @@
+<app-side-bar [externalUsername]="externalUsername"></app-side-bar>
+<form [formGroup]="userInfoForm" enctype="multipart/form-data">
+  <section class="user-info">
+    <h2 class="form-title">USER INFORMATION</h2>
+    <div class="profile-card">
+      <div class="profile-header">
+        <div class="cover-photo" [ngStyle]="{'background-image': 'url(' + coverUrl + ')'}">
+          <input type="file" #CoverPhoto style="display: none" (change)="onUploadCoverImgae($event)" accept="image/*"  [disabled]="isReadOnly">
+          <button class="edit-cover-btn" (click)="CoverPhoto.click()">
+            <i class="camera-icon"><svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd"
+                  d="M7.5 4.586A2 2 0 0 1 8.914 4h6.172a2 2 0 0 1 1.414.586L17.914 6H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h1.086L7.5 4.586ZM10 12a2 2 0 1 1 4 0 2 2 0 0 1-4 0Zm2-4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"
+                  clip-rule="evenodd" />
+              </svg>
+            </i>
+            EDIT COVER PHOTO
+          </button>
+        </div>
+
+        <div class="profile-pic-wrapper">
+          <div class="profile-pic" [ngStyle]="{'background-image': 'url(' + profileUrl + ')'}"></div>
+          <input type="file" #Profile style="display: none" (change)="onUploadProfile($event)" accept="image/*" [readonly]="isReadOnly">
+          <button class="profile-pic-btn" (click)="Profile.click()" [disabled]="isReadOnly" >
+            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+              width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+              <path fill-rule="evenodd"
+                d="M7.5 4.586A2 2 0 0 1 8.914 4h6.172a2 2 0 0 1 1.414.586L17.914 6H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h1.086L7.5 4.586ZM10 12a2 2 0 1 1 4 0 2 2 0 0 1-4 0Zm2-4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"
+                clip-rule="evenodd" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="profile-body">
+        <div class="input-grid">
+          <div class="field">
+            <label>USERNAME</label>
+            <input type="text" [ngClass]="{ 'readonly-input': externalUsername }" [readonly]="isReadOnly" formControlName="username" />
+          </div>
+
+          <div class="field">
+            <label>NICK NAME</label>
+            <input type="text" formControlName="nickname" [readonly]="isReadOnly" />
+          </div>
+
+          <div class="field">
+            <label>FIRST NAME</label>
+            <input type="text" formControlName="firstname" [readonly]="isReadOnly"/>
+          </div>
+          <div class="field">
+            <label>LAST NAME</label>
+            <input type="text" formControlName="lastname" [readonly]="isReadOnly" />
+          </div>
+          <div class="field">
+            <label>POSITION</label>
+            <select [class.readonly-mode]="isReadOnly" [ngClass]="{ 'text-muted': !userInfoForm.get('position')?.value}" formControlName="position">
+              <option value="" selected disabled>Please select</option>
+              <option value="Fronent" >Frontend Developer</option>
+              <option value="Backend" >Backend Developer</option>
+              <option value="Fullstack" >Fullstack Developer</option>
+              <option value="Manager" >Manager</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>NATIONALITY</label>
+            <input type="text" formControlName="nationality" [readonly]="isReadOnly"/>
+          </div>
+          <div class="field">
+            <label>TELEPHONE NUMBER</label>
+            <input type="tel" formControlName="phone" [readonly]="isReadOnly"/>
+          </div>
+          <div class="field">
+            <label>STARTING DATE</label>
+            <input class="date-picker" placeholder="" name="dp" type="date"
+              formControlName="start_date" [readonly]="isReadOnly" />
+            <!-- <i class="bi bi-calendar calendar-icon" (click)="d.toggle()"></i> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footter-form">
+      <button type="submit" class="btn btn-primary" (click)="onSubmit()" [disabled]="isLoading" [hidden]="isReadOnly">Save</button>
+    </div>
+  </section>
+</form>

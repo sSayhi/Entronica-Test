@@ -1,0 +1,261 @@
+<app-side-bar [externalUsername]="externalUsername"></app-side-bar>
+
+<div class="section-container">
+    <h2 class="section-title">EDUCATIONAL INFORMATION</h2>
+
+    <div class="timeline-wrapper">
+        <button class="btn-add-function" type="button" data-bs-toggle="modal" data-bs-target="#educationModal">
+            ADD EDUCATION
+        </button>
+
+        <div class="timeline-content-education">
+            <div class="timeline-item" *ngFor="let education of arrEducation;">
+                <span class="year">{{education.year}}</span>
+                <div class="dot"></div>
+                <span class="location">{{education.location}}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form [formGroup]="educationForm">
+    <div class="modal" id="educationModal" #educationModal tabindex="-1" aria-labelledby="educationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">EDUCATION</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="field">
+                        <label>Year</label>
+                        <input type="text" min="1900" max="2026" placeholder="YYYY" maxlength="4"
+                            formControlName="year" />
+                    </div>
+                    <div class="field">
+                        <label>HISTORY EDUCATION</label>
+                        <input type="text" formControlName="location" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" class="btn btn-primary" (click)="addToEducationList()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- END Educational Information -->
+
+<div class="section-container">
+    <h2 class="section-title">EXPERIENCE INFORMATION</h2>
+
+    <div class="timeline-wrapper">
+        <button class="btn-add-function" type="button" data-bs-toggle="modal" data-bs-target="#experienceModal">
+            ADD EXPERIENCE
+        </button>
+
+        <div class="timeline-content-experience">
+            <div class="timeline-item" *ngFor="let experience of arrExperience;let i = index">
+                <div class="dot"></div>
+                <div class="input-wrapper">
+                    <input type="text" value="{{experience.company}} {{experience.start_date}} - {{experience.end_date}}" readonly>
+                    <span class="sub-text">{{experience.position}}</span>
+                    <button class="btn-remove" (click)="removeExperience(i)">x</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form [formGroup]="experienceForm">
+    <div class="modal" id="experienceModal" #experienceModal tabindex="-1" aria-labelledby="experienceLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">EXPERIENCE</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="field">
+                        <label>Company</label>
+                        <input type="text" formControlName="company" />
+                    </div>
+                    <div class="field">
+                        <label>StartYear</label>
+                        <input type="text" min="1900" max="2026" placeholder="YYYY" maxlength="4"  formControlName="start_date" />
+                    </div>
+                    <div class="field">
+                        <label>EndYear</label>
+                        <input type="text" min="1900" max="2026" placeholder="YYYY" maxlength="4" formControlName="end_date" />
+                    </div>
+                    <div class="field">
+                        <label>Position</label>
+                        <input type="text" formControlName="position" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" (click)="addToExperienceList()" >Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- END Experience Information -->
+
+<div class="section-container">
+    <h2 class="section-title">SKILL INFORMATION</h2>
+
+    <div class="skill-content-wrapper">
+        <button class="btn-add-function" type="button" data-bs-toggle="modal" data-bs-target="#skilModal">
+            ADD SKILL
+        </button>
+
+        <div class="skill-list">
+            <div class="skill-item" *ngFor="let skill of arrSkills">
+                <div class="skill-name">{{ skill.skill }}</div>
+                <div class="skill-score">{{ skill.level }}</div>
+                <div class="progress-bg">
+                    <div class="progress-fill" [style.width.%]="(skill?.level ?? 0) * 10"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form [formGroup]="skillForm">
+    <div class="modal" id="skilModal" #skilModal tabindex="-1" aria-labelledby="experienceLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Skill</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="field">
+                        <label>Skill</label>
+                        <input type="text" formControlName="skill" />
+                    </div>
+                    <div class="field">
+                        <label>Level</label>
+                        <input type="text" formControlName="level" min="1" max="10" placeholder="1-10" maxlength="2" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" class="btn btn-primary" (click)="addToSkillList()">
+                        Save changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- END Skill Information -->
+
+<div class="section-container">
+    <h2 class="section-title">INTERESTS INFORMATION</h2>
+
+    <div class="section-content-wrapper">
+        <button class="btn-add-function" data-bs-toggle="modal" data-bs-target="#InterestsModal">ADD INTERESTS</button>
+
+        <div class="section-list">
+            <div class="badge-tag" *ngFor="let interests of arrInterests;let i = index">
+                <span>{{interests.name}}</span>
+                <button class="btn-remove-tag" (click)="removeInterest(i)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="15" y1="9" x2="9" y2="15"></line>
+                        <line x1="9" y1="9" x2="15" y2="15"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form [formGroup]="InterestsForm">
+    <div class="modal" id="InterestsModal" #InterestModal tabindex="-1" aria-labelledby="experienceLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">INTERESTS</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="field">
+                        <label>Interests</label>
+                        <input type="text" formControlName="name" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" class="btn btn-primary" (click)="addToInterestList()">
+                        Save changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<!-- END INTERESTS Information -->
+
+<div class="section-container">
+    <h2 class="section-title">GUILD INFORMATION</h2>
+
+    <div class="section-content-wrapper">
+        <button class="btn-add-function" data-bs-toggle="modal" data-bs-target="#GuildModal">ADD GUILD</button>
+        <div class="section-list">
+            <div class="badge-tag" *ngFor="let guild of arrGuild;let i = index">
+                <span>{{guild.name}}</span>
+                <button class="btn-remove-tag" (click)="removeGuild(i)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="15" y1="9" x2="9" y2="15"></line>
+                        <line x1="9" y1="9" x2="15" y2="15"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form [formGroup]="GuildForm">
+    <div class="modal" id="GuildModal" #guildModal tabindex="-1" aria-labelledby="experienceLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">GUILD</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="field">
+                        <label>Guild</label>
+                        <input type="text" formControlName="name" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" class="btn btn-primary" (click)="addToGuildList()">
+                        Save changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
