@@ -19,7 +19,7 @@ export class EducationController {
       }
       const user = await this.service.FindEducationById(UserId);
       console.info("Successfully GET : getEducationInfo => user information");
-      res.json({
+      res.status(200).json({
         message: "Successfully GET : getEducationInfo => user information",
         Data: user,
       });

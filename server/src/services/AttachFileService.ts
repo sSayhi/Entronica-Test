@@ -27,14 +27,13 @@ export class AttachmentService {
                 username_id: UserId
             };
 
-            const findId = this.getFileByUsername(UserId, Category);
-            console.log((await findId).data);
-            
-            if ((await findId).data.length > 0) {
-                const path = `../assets/${(await findId).data.file_path}/${(await findId).data.file_name}`
-                
-                await this.deleteFile(path)
-                await this.deletePhoto(UserId, Category)
+            const findId = await this.getFileByUsername(UserId, Category);
+            if (findId.data.length > 0) {
+                for (const file of findId.data) {
+                    const path = `${file.file_path}/${file.file_name}`
+                    await this.deleteFile(path)
+                    await this.deletePhoto(UserId, Category)
+                }
             }
 
             const generateQuery: SqlDto = {
@@ -93,8 +92,9 @@ export class AttachmentService {
 
     async deleteFile(filename: string) {
         try {
-            const filePath = path.join(__dirname, 'assets', filename); 
-            await fs.unlink(filePath);
+            const folder = path.join(__dirname, '../../assets')
+            const filepath = folder + '/' + filename
+            await fs.unlink(filepath);
         } catch (err) {
             console.error('error:', err);
         }

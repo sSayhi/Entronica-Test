@@ -15,7 +15,7 @@ export class CategoryinfoController {
       console.info(
         "Successfully GET : getActiveCategoryInfo => user information",
       );
-      res.json({
+      res.status(200).json({
         message: "Successfully GET : getActiveCategoryInfo => user information",
         Data: user,
       });

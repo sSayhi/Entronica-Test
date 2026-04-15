@@ -14,7 +14,7 @@ export class UserService {
     const generateQuery: SqlDto = {
       columnSelect: "*",
       fromTable: 'public."User"',
-      orderBy : 'key_id asc'
+      orderBy: 'key_id asc'
     };
     const result = await this.repository.select(generateQuery);
     return result;
@@ -42,7 +42,7 @@ export class UserService {
         columnSelect:
           "username, nickname, firstname, lastname, position, nationality, phone, start_date",
         fromTable: 'public."User"',
-        values: `'${User.username}', '${User.nickname}', '${User.firstname}', '${User.lastname}', '${User.position}', '${User.nationality}', '${User.phone}', '${User.start_date}'`,
+        values: `'${User.username}', '${User.nickname}', '${User.firstname}', '${User.lastname}', '${User.position}', '${User.nationality}', '${User.phone}', '${User?.start_date ?? '2026-01-01'}'`,
       };
       await this.repository.Save(manager, generateQuery);
       if (Array.isArray(files) && files.length > 0) {

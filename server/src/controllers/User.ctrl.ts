@@ -13,7 +13,7 @@ export class UserController {
 
       const user = await this.service.getUserList();
       console.info("Successfully GET : getlistUser => user information");
-      res.json({
+      res.status(200).json({
         message: "Successfully GET : getlistUser => user information",
         Data: user,
       });
@@ -43,7 +43,7 @@ export class UserController {
           }));
 
         console.info("Successfully GET : getUserByUsername => user information");
-        res.json({
+        res.status(200).json({
           message: "Successfully GET : getUserByUsername => user information",
           Data: user,
           displayImage: imageUrl

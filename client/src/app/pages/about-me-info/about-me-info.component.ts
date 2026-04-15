@@ -30,6 +30,7 @@ export class AboutMeInfoComponent implements OnInit {
 
   externalUsername!: string | null;
   isView: boolean = false;
+  isLoading: boolean = false;
 
   @ViewChild('educationModal') modalEducation!: ElementRef;
   @ViewChild('experienceModal') modalExperience!: ElementRef;
@@ -135,6 +136,7 @@ export class AboutMeInfoComponent implements OnInit {
   }
 
   OnSaveEducation() {
+    this.isLoading = true;
     if (this.externalUsername) {
       if (this.educationForm.valid) {
         this.educationForm.patchValue({
@@ -158,6 +160,7 @@ export class AboutMeInfoComponent implements OnInit {
     } else {
       alert('ยังไม่ได้ลงทะเบียน username')
     }
+    this.isLoading = false;
   }
 
   /* ----------------- Experience -----------------*/
@@ -211,13 +214,12 @@ export class AboutMeInfoComponent implements OnInit {
             position: element.position
           });
         }
-
       }
     });
   }
 
   OnSaveExperience() {
-
+    this.isLoading = true;
     if (this.experienceForm.valid) {
       this.experienceForm.patchValue({
         user_id: this.externalUsername
@@ -238,6 +240,7 @@ export class AboutMeInfoComponent implements OnInit {
     } else {
       console.log('form form is invalid');
     }
+    this.isLoading = false;
   }
 
 
@@ -277,6 +280,7 @@ export class AboutMeInfoComponent implements OnInit {
   }
 
   OnSaveSkill() {
+    this.isLoading = true;
     if (this.skillForm.valid) {
       this.skillForm.patchValue({
         user_id: this.externalUsername
@@ -297,6 +301,7 @@ export class AboutMeInfoComponent implements OnInit {
     } else {
       console.log('form form is invalid');
     }
+    this.isLoading = false;
   }
 
   /* ----------------- INTERESTS ----------------- */
@@ -403,7 +408,7 @@ export class AboutMeInfoComponent implements OnInit {
   }
 
   OnSaveInterest(category: number) {
-
+    this.isLoading = true;
     if (category === 1) { // Interest
       if (this.InterestsForm.valid) {
         this.InterestsForm.patchValue({
@@ -448,5 +453,6 @@ export class AboutMeInfoComponent implements OnInit {
         })
       }
     }
+    this.isLoading = false;
   }
 }

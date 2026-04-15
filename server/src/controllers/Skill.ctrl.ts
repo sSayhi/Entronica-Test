@@ -18,7 +18,7 @@ export class SkillController {
       }
       const user = await this.service.findSkillById(UserId);
       console.info("Successfully GET : getSkillsById => user information");
-      res.json({
+      res.status(200).json({
         message: "Successfully GET : getSkillsById => user information",
         Data: user,
       });

@@ -20,7 +20,7 @@ export class ExperienceController {
       }
       const data = await this.service.FindExperienceById(UserId);
       console.info("Successfully GET : getExperienceInfo => user information");
-      res.json({
+      res.status(200).json({
         message: "Successfully GET : getExperienceInfo => user information",
         Data: data,
       });

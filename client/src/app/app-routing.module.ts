@@ -25,7 +25,7 @@ const routes: Routes = [
       { path: 'information/:username', component: InformationComponent, },
     ],
   },
-  { path: '', redirectTo: 'entronica/user-info', pathMatch: 'full' },
+  { path: '', redirectTo: 'entronica/list-user-info', pathMatch: 'full' },
 ];
 
 @NgModule({

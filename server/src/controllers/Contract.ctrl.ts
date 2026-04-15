@@ -22,7 +22,7 @@ export class ContactController {
       }
       const user = await this.service.FindContactById(username);
       console.info("Successfully GET : getContactInfo => user information");
-      res.json({
+      res.status(200).json({
         message: "Successfully GET : getContactInfo => user information",
         Data: user,
       });

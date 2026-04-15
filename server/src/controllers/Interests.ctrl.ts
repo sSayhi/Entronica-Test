@@ -18,7 +18,7 @@ export class InterestsController {
       }
       const user = await this.service.FindInterestsById(UserId);
       console.info("Successfully GET : getInterestsById => user information");
-      res.json({
+      res.status(200).json({
         message: "Successfully GET : getInterestsById => user information",
         Data: user,
       });
