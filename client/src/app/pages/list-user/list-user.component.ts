@@ -24,8 +24,4 @@ export class ListUserComponent implements OnInit {
     })
   }
 
-   onRowClick(Username: string) {
-    this.router.navigate([`/entronica/user-info`, Username]);
-  }
-
 }

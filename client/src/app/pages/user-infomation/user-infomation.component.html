@@ -5,8 +5,8 @@
     <div class="profile-card">
       <div class="profile-header">
         <div class="cover-photo" [ngStyle]="{'background-image': 'url(' + coverUrl + ')'}">
-          <input type="file" #CoverPhoto style="display: none" (change)="onUploadCoverImgae($event)" accept="image/*"  [disabled]="isReadOnly">
-          <button class="edit-cover-btn" (click)="CoverPhoto.click()">
+          <input type="file" #CoverPhoto style="display: none" (change)="onUploadCoverImgae($event)" accept="image/*" [readonly]="isView">
+          <button class="edit-cover-btn" (click)="CoverPhoto.click()" [disabled]="isView" [class.readonly-btn]="isView">
             <i class="camera-icon"><svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                 <path fill-rule="evenodd"
@@ -20,8 +20,8 @@
 
         <div class="profile-pic-wrapper">
           <div class="profile-pic" [ngStyle]="{'background-image': 'url(' + profileUrl + ')'}"></div>
-          <input type="file" #Profile style="display: none" (change)="onUploadProfile($event)" accept="image/*" [readonly]="isReadOnly">
-          <button class="profile-pic-btn" (click)="Profile.click()" [disabled]="isReadOnly" >
+          <input type="file" #Profile style="display: none" (change)="onUploadProfile($event)" accept="image/*"  [readonly]="isView" >
+          <button class="profile-pic-btn" (click)="Profile.click()" [disabled]="isView">
             <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
               width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
               <path fill-rule="evenodd"
@@ -41,20 +41,20 @@
 
           <div class="field">
             <label>NICK NAME</label>
-            <input type="text" formControlName="nickname" [readonly]="isReadOnly" />
+            <input type="text" formControlName="nickname" />
           </div>
 
           <div class="field">
             <label>FIRST NAME</label>
-            <input type="text" formControlName="firstname" [readonly]="isReadOnly"/>
+            <input type="text" formControlName="firstname" />
           </div>
           <div class="field">
             <label>LAST NAME</label>
-            <input type="text" formControlName="lastname" [readonly]="isReadOnly" />
+            <input type="text" formControlName="lastname"  />
           </div>
           <div class="field">
             <label>POSITION</label>
-            <select [class.readonly-mode]="isReadOnly" [ngClass]="{ 'text-muted': !userInfoForm.get('position')?.value}" formControlName="position">
+            <select [ngClass]="{ 'text-muted': !userInfoForm.get('position')?.value}" formControlName="position">
               <option value="" selected disabled>Please select</option>
               <option value="Fronent" >Frontend Developer</option>
               <option value="Backend" >Backend Developer</option>
@@ -64,23 +64,23 @@
           </div>
           <div class="field">
             <label>NATIONALITY</label>
-            <input type="text" formControlName="nationality" [readonly]="isReadOnly"/>
+            <input type="text" formControlName="nationality"/>
           </div>
           <div class="field">
             <label>TELEPHONE NUMBER</label>
-            <input type="tel" formControlName="phone" [readonly]="isReadOnly"/>
+            <input type="tel" formControlName="phone"/>
           </div>
           <div class="field">
             <label>STARTING DATE</label>
             <input class="date-picker" placeholder="" name="dp" type="date"
-              formControlName="start_date" [readonly]="isReadOnly" />
+              formControlName="start_date"  />
             <!-- <i class="bi bi-calendar calendar-icon" (click)="d.toggle()"></i> -->
           </div>
         </div>
       </div>
     </div>
     <div class="footter-form">
-      <button type="submit" class="btn btn-primary" (click)="onSubmit()" [disabled]="isLoading" [hidden]="isReadOnly">Save</button>
+      <button type="submit" class="btn btn-primary" (click)="onSubmit()" [disabled]="isLoading" [hidden]="isView">Save</button>
     </div>
   </section>
 </form>

@@ -27,10 +27,19 @@ export class UserInfomationComponent implements OnInit {
   externalUsername !: string | null;
   isLoading: boolean = false;
   isReadOnly: boolean = false;
+  isView: boolean = false;
 
   ngOnInit(): void {
     this.externalUsername = this.route.snapshot.paramMap.get('username');
+    
+    this.route.queryParamMap.subscribe(queryParams => {
+      this.isView = queryParams.get('view') === 'true';
 
+      if (this.isView) {
+        this.userInfoForm.disable()
+        this.isReadOnly = true;
+      }
+    });
     if (this.externalUsername) {
       this.loadUserData(this.externalUsername);
     }
@@ -59,6 +68,11 @@ export class UserInfomationComponent implements OnInit {
         this.coverUrl = e.target.result;
       };
       reader.readAsDataURL(file);
+      for (let i = this.arr_File.length - 1; i >= 0; i--) {
+        if (this.arr_File[i].category === '1') {
+          this.arr_File.splice(i, 1);
+        }
+      }
       this.arr_File.push({
         file: event.target.files[0],
         category: '1'
@@ -76,6 +90,11 @@ export class UserInfomationComponent implements OnInit {
         this.profileUrl = e.target.result;
       };
       reader.readAsDataURL(file);
+      for (let i = this.arr_File.length - 1; i >= 0; i--) {
+        if (this.arr_File[i].category === '2') {
+          this.arr_File.splice(i, 1);
+        }
+      }
       this.arr_File.push({
         file: event.target.files[0],
         category: '2'
@@ -85,36 +104,63 @@ export class UserInfomationComponent implements OnInit {
 
   onSubmit() {
     this.isLoading = true;
-    console.log(this.userInfoForm);
-    if (this.userInfoForm.valid) {
-      const User: UserDTO = this.userInfoForm.getRawValue();
-      const fd = new FormData();
-      fd.append('User', JSON.stringify(User));
-      this.arr_File.forEach((item) => {
-        fd.append('BG_File', item.file, item.file.name);
-        fd.append('Category', item.category);
-      });
+    if (!this.externalUsername) {
+      // Create
+      if (this.userInfoForm.valid) {
+        const User: UserDTO = this.userInfoForm.getRawValue();
+        const fd = new FormData();
+        fd.append('User', JSON.stringify(User));
+        this.arr_File.forEach((item) => {
+          fd.append('BG_File', item.file, item.file.name);
+          fd.append('Category', item.category);
+        });
 
-      this.userService.createUserProfile(fd).subscribe({
-        next: (res) => {
-          this.isLoading = false;
-          console.log("Create User sucessfully");
-          alert("บันทึกสำเร็จ")
-          this.router.navigate([`/entronica/user-info/`, res.userId])
-        },
-        error(err) {
-          console.error('Error :', err);
-        },
-        complete() {
-          console.log('Upload complete');
+        this.userService.createUserProfile(fd).subscribe({
+          next: (res) => {
+            console.log("Create User sucessfully");
+            alert("บันทึกสำเร็จ")
+            this.router.navigate([`/entronica/user-info/`, res.userId])
+          },
+          error(err) {
+            console.error('Error :', err);
+          },
+          complete() {
+            console.log('Upload complete');
 
-        },
-      })
-
+          },
+        })
+      } else {
+        console.log('form form is invalid');
+      }
     } else {
-      console.log('form form is invalid');
-      this.isLoading = false;
+      //Update
+      if (this.userInfoForm.valid) {
+        const User: UserDTO = this.userInfoForm.getRawValue();
+        const fd = new FormData();
+        fd.append('User', JSON.stringify(User));
+        this.arr_File.forEach((item) => {
+          fd.append('BG_File', item.file, item.file.name);
+          fd.append('Category', item.category);
+        });
+        this.userService.editUserProfile(fd).subscribe({
+          next: (res) => {
+            console.log("Edit User sucessfully");
+            alert("บันทึกสำเร็จ")
+            window.location.reload();
+          },
+          error(err) {
+            console.error('Error :', err);
+          },
+          complete() {
+            console.log('Upload complete');
+
+          },
+        })
+      } else {
+        console.log('form form is invalid');
+      }
     }
+    this.isLoading = false;
   }
 
   loadUserData(username: string) {
@@ -132,7 +178,6 @@ export class UserInfomationComponent implements OnInit {
         });
         this.coverUrl = item.displayImage.find((Categoryimg: any) => Categoryimg.category === 1)?.url || '';
         this.profileUrl = item.displayImage.find((Categoryimg: any) => Categoryimg.category === 2)?.url || '';
-        this.userInfoForm.disable();
         this.isReadOnly = true
       }
     });

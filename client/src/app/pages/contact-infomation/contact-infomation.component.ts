@@ -14,7 +14,9 @@ export class ContactInfomationComponent implements OnInit {
   contactInfoForm: FormGroup;
   allDataAddres = ALL_SUBDISTRICTS;
   externalUsername: string | null = ""
-  isReadOnly: boolean = false;
+  isEdit: boolean = false;
+  isLoading: boolean = false;
+  isView : boolean = false;
 
   subdistrictsList: any[] = [];
   districtsList: any[] = [];
@@ -30,6 +32,14 @@ export class ContactInfomationComponent implements OnInit {
     if (this.externalUsername) {
       this.loadUserData(this.externalUsername);
     }
+
+    this.route.queryParamMap.subscribe(queryParams => {
+      this.isView = queryParams.get('view') === 'true';
+
+      if (this.isView) {
+        this.contactInfoForm.disable()
+      }
+    });
   }
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private contactService: ContactService) {
@@ -78,14 +88,40 @@ export class ContactInfomationComponent implements OnInit {
   }
 
   onSubmit() {
+    this.isLoading = true;
     if (this.externalUsername) {
-      if (this.contactInfoForm.valid) {
+      if (!this.isEdit) {
+        if (this.contactInfoForm.valid) {
+          this.contactInfoForm.patchValue({
+            user_id: this.externalUsername
+          });
+          const contact: ContactDTO = this.contactInfoForm.getRawValue();
+
+          this.contactService.createContact(contact).subscribe({
+            next: (res) => {
+              console.log("Update Contact sucessfully");
+              alert("บันทึกสำเร็จ")
+              window.location.reload();
+            },
+            error(err) {
+              console.error('Error :', err);
+            },
+            complete() {
+              console.log('Upload complete');
+
+            },
+          })
+
+        } else {
+          console.log('form form is invalid');
+        }
+      } else {
         this.contactInfoForm.patchValue({
           user_id: this.externalUsername
         });
         const contact: ContactDTO = this.contactInfoForm.getRawValue();
 
-        this.contactService.createContact(contact).subscribe({
+        this.contactService.UpdateContact(contact).subscribe({
           next: (res) => {
             console.log("Update Contact sucessfully");
             alert("บันทึกสำเร็จ")
@@ -99,13 +135,11 @@ export class ContactInfomationComponent implements OnInit {
 
           },
         })
-
-      } else {
-        console.log('form form is invalid');
       }
     } else {
       alert('ยังไม่ได้ลงทะเบียน username')
     }
+    this.isLoading = true;
   }
 
   loadUserData(username: string) {
@@ -122,10 +156,8 @@ export class ContactInfomationComponent implements OnInit {
           line_id: item?.Data?.[0].line_id ?? '',
           instagram: item?.Data?.[0].instagram ?? '',
         });
-        this.contactInfoForm.disable();
-        this.isReadOnly = true;
+        this.isEdit = true
       }
-
     });
   }
 }

@@ -82,8 +82,15 @@ body {
   display: inline-flex;
   align-items: center;
   color: $secondary;
+  gap: 10px;
 
   &.view:hover {
+    background-color: rgba($primary, 0.1);
+    color: $primary;
+    transform: scale(1.1);
+  }
+
+  &.edit:hover {
     background-color: rgba($primary, 0.1);
     color: $primary;
     transform: scale(1.1);

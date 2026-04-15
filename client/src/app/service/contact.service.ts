@@ -16,9 +16,7 @@ export class ContactService {
   }
 
   UpdateContact(contact : ContactDTO): Observable<any> {
-    const form = new FormData();
-    form.append('Ticket', JSON.stringify(contact));
-    return this.http.post(`${environment.apiUrl}/ContactSvc/UpdateContact`, form);
+    return this.http.put(`${environment.apiUrl}/ContactSvc/UpdateContact`, {Contact : contact});
   }
 
   getContactById(Username : string): Observable<any> {

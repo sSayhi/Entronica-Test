@@ -9,6 +9,7 @@
       <thead>
         <tr>
           <th>ID</th>
+          <th>username</th>
           <th>ชื่อ - นามสกุล</th>
           <th>ชื่อเล่น</th>
           <th>ตำแหน่ง</th>
@@ -18,11 +19,19 @@
       <tbody>
         <tr *ngFor="let user of Datalist; let i = index">
           <td>{{i+1}}</td>
+          <td>{{user.username}}</td>
           <td>{{user.firstname}} {{user.lastname}}</td>
           <td>{{user.nickname}} </td>
           <td>{{user.position}}</td>
           <td class="text-center">
-            <button class="action-btn view" title="ดูรายละเอียด" (click)="onRowClick(user.username)">
+            <button class="action-btn edit" title="แก้ไข" [routerLink]="['/entronica/user-info', user.username]">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+              </svg>
+            </button>
+            <button class="action-btn view" title="ดูรายละเอียด" [routerLink]="['/entronica/information', user.username]" [queryParams]="{ view: 'true'}">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>

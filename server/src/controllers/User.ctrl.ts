@@ -39,7 +39,7 @@ export class UserController {
           .filter((u: any) => u.file_path && u.file_name) // กัน null
           .map((u: any) => ({
             url: `${SERVER_URL}/assets/${u.file_path}/${u.file_name}`,
-            category : u.img_category
+            category: u.img_category
           }));
 
         console.info("Successfully GET : getUserByUsername => user information");
@@ -86,7 +86,15 @@ export class UserController {
       console.info("START updateUserInfo");
       const { User } = req.body;
 
-      const result = await this.service.editUserInfo(User);
+      const user: UserDTO = JSON.parse(User);
+      const files = req.files as Express.Multer.File[] | [];
+
+      if (!User) {
+        console.error("❌ Missing User information");
+        return res.status(400).json({ message: "Missing User information" });
+      }
+
+      const result = await this.service.editUserInfo(user,files, req.body.Category);
       console.info("✅ Successfully updated information in updateUserInfo");
       return res.status(200).json({
         message: "Updated information Successfully",

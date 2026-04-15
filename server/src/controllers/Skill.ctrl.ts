@@ -51,21 +51,4 @@ export class SkillController {
       return res.status(500).json({ message: err.message });
     }
   }
-
-  async updateSkills(req: Request, res: Response) {
-    try {
-      console.info("START updateSkills");
-      const { Skills } = req.body;
-
-      const result = await this.service.editSkillInfo(Skills);
-      console.info("✅ Successfully updated information in updateSkills");
-      return res.status(200).json({
-        message: "Updated information Successfully",
-        userId: `Update By : ${result.username}`,
-      });
-    } catch (err: any) {
-      console.error("💥 ERROR updateSkills: %o", err);
-      res.status(500).json({ message: err.message });
-    }
-  }
 }

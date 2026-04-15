@@ -29,6 +29,7 @@ export class AboutMeInfoComponent implements OnInit {
   arrGuild: interestsDTO[] = [];
 
   externalUsername!: string | null;
+  isView: boolean = false;
 
   @ViewChild('educationModal') modalEducation!: ElementRef;
   @ViewChild('experienceModal') modalExperience!: ElementRef;
@@ -44,6 +45,9 @@ export class AboutMeInfoComponent implements OnInit {
       this.loadDataSkill(this.externalUsername);
       this.loadDataInterest(this.externalUsername);
     }
+    this.route.queryParamMap.subscribe(queryParams => {
+      this.isView = queryParams.get('view') === 'true';
+    });
   }
 
   constructor(
@@ -92,18 +96,22 @@ export class AboutMeInfoComponent implements OnInit {
 
   /*----------------- EDUCATION -----------------*/
   addToEducationList() {
-    if (this.educationForm.valid) {
-      const year = this.educationForm.value.year;
-      const location = this.educationForm.value.location;
-      const user_id = this.externalUsername || null;
-      this.arrEducation.push({ location, year, user_id });
-      this.OnSaveEducation();
-      this.educationForm.reset();
-      const el = this.modalEducation.nativeElement;
-      const modal = (window as any).bootstrap.Modal.getOrCreateInstance(el);
-      modal?.hide();
+    if (this.externalUsername) {
+      if (this.educationForm.valid) {
+        const year = this.educationForm.value.year;
+        const location = this.educationForm.value.location;
+        const user_id = this.externalUsername || null;
+        this.arrEducation.push({ location, year, user_id });
+        this.OnSaveEducation();
+        this.educationForm.reset();
+        const el = this.modalEducation.nativeElement;
+        const modal = (window as any).bootstrap.Modal.getOrCreateInstance(el);
+        modal?.hide();
+      } else {
+        console.log('educationForm form is invalid');
+      }
     } else {
-      console.log('educationForm form is invalid');
+      alert('ยังไม่ได้ลงทะเบียน username')
     }
   }
 
@@ -154,20 +162,24 @@ export class AboutMeInfoComponent implements OnInit {
 
   /* ----------------- Experience -----------------*/
   addToExperienceList() {
-    if (this.experienceForm.valid) {
-      const company = this.experienceForm.value.company;
-      const start_date = this.experienceForm.value.start_date;
-      const end_date = this.experienceForm.value.end_date;
-      const position = this.experienceForm.value.position;
-      const user_id = this.externalUsername || null;
-      this.arrExperience.push({ company, start_date, end_date, position, user_id });
-      this.OnSaveExperience();
-      this.experienceForm.reset();
-      const el = this.modalExperience.nativeElement;
-      const modal = (window as any).bootstrap.Modal.getOrCreateInstance(el);
-      modal?.hide();
+    if (this.externalUsername) {
+      if (this.experienceForm.valid) {
+        const company = this.experienceForm.value.company;
+        const start_date = this.experienceForm.value.start_date;
+        const end_date = this.experienceForm.value.end_date;
+        const position = this.experienceForm.value.position;
+        const user_id = this.externalUsername || null;
+        this.arrExperience.push({ company, start_date, end_date, position, user_id });
+        this.OnSaveExperience();
+        this.experienceForm.reset();
+        const el = this.modalExperience.nativeElement;
+        const modal = (window as any).bootstrap.Modal.getOrCreateInstance(el);
+        modal?.hide();
+      } else {
+        console.log('experienceForm form is invalid');
+      }
     } else {
-      console.log('experienceForm form is invalid');
+      alert('ยังไม่ได้ลงทะเบียน username')
     }
   }
 
@@ -205,49 +217,50 @@ export class AboutMeInfoComponent implements OnInit {
   }
 
   OnSaveExperience() {
-    if (this.externalUsername) {
-      if (this.experienceForm.valid) {
-        this.experienceForm.patchValue({
-          user_id: this.externalUsername
-        });
-        const experience: ExperienceDTO = this.experienceForm.getRawValue();
 
-        this.experienceService.createExperience(experience).subscribe({
-          next: (res) => {
-            console.log("Update Experience sucessfully");
-          },
-          error(err) {
-            console.error('Error :', err);
-          },
-          complete() {
-            console.log('Upload complete');
-          },
-        })
+    if (this.experienceForm.valid) {
+      this.experienceForm.patchValue({
+        user_id: this.externalUsername
+      });
+      const experience: ExperienceDTO = this.experienceForm.getRawValue();
+
+      this.experienceService.createExperience(experience).subscribe({
+        next: (res) => {
+          console.log("Update Experience sucessfully");
+        },
+        error(err) {
+          console.error('Error :', err);
+        },
+        complete() {
+          console.log('Upload complete');
+        },
+      })
+    } else {
+      console.log('form form is invalid');
+    }
+  }
+
+
+  /*----------------- SKILL -----------------*/
+  addToSkillList() {
+    if (this.externalUsername) {
+      if (this.skillForm.valid) {
+        const skill = this.skillForm.value.skill;
+        const level = this.skillForm.value.level;
+        const user_id = this.externalUsername;
+        this.arrSkills.push({ skill, level, user_id });
+        this.OnSaveSkill();
+        this.skillForm.reset();
+        const el = this.modalSkill.nativeElement;
+        const modal = (window as any).bootstrap.Modal.getOrCreateInstance(el);
+        modal?.hide();
       } else {
-        console.log('form form is invalid');
+        console.log('Skill form is invalid');
       }
     } else {
       alert('ยังไม่ได้ลงทะเบียน username')
     }
   }
-
-  /*----------------- SKILL -----------------*/
-  addToSkillList() {
-    if (this.skillForm.valid) {
-      const skill = this.skillForm.value.skill;
-      const level = this.skillForm.value.level;
-      const user_id = this.externalUsername;
-      this.arrSkills.push({ skill, level, user_id });
-      this.OnSaveSkill();
-      this.skillForm.reset();
-      const el = this.modalSkill.nativeElement;
-      const modal = (window as any).bootstrap.Modal.getOrCreateInstance(el);
-      modal?.hide();
-    } else {
-      console.log('Skill form is invalid');
-    }
-  }
-
   loadDataSkill(username: string) {
     this.skillService.getSkilById(username).subscribe(item => {
       if (item.Data.length > 0) {
@@ -264,47 +277,47 @@ export class AboutMeInfoComponent implements OnInit {
   }
 
   OnSaveSkill() {
-    if (this.externalUsername) {
-      if (this.skillForm.valid) {
-        this.skillForm.patchValue({
-          user_id: this.externalUsername
-        });
-        const skill: SkillDto = this.skillForm.getRawValue();
+    if (this.skillForm.valid) {
+      this.skillForm.patchValue({
+        user_id: this.externalUsername
+      });
+      const skill: SkillDto = this.skillForm.getRawValue();
 
-        this.skillService.createSkillInfo(skill).subscribe({
-          next: (res) => {
-            console.log("Update Skill sucessfully");
-          },
-          error(err) {
-            console.error('Error :', err);
-          },
-          complete() {
-            console.log('Upload complete');
-          },
-        })
-      } else {
-        console.log('form form is invalid');
-      }
+      this.skillService.createSkillInfo(skill).subscribe({
+        next: (res) => {
+          console.log("Update Skill sucessfully");
+        },
+        error(err) {
+          console.error('Error :', err);
+        },
+        complete() {
+          console.log('Upload complete');
+        },
+      })
     } else {
-      alert('ยังไม่ได้ลงทะเบียน username')
+      console.log('form form is invalid');
     }
   }
 
   /* ----------------- INTERESTS ----------------- */
 
   addToInterestList() {
-    if (this.InterestsForm.valid) {
-      const name = this.InterestsForm.value.name;
-      const category_id = this.InterestsForm.value.category_id;
-      const user_id = this.externalUsername;
-      this.arrInterests.push({ name, category_id, user_id });
-      this.OnSaveInterest(1);
-      this.InterestsForm.reset();
-      const el = this.modalInterst.nativeElement;
-      const modal = (window as any).bootstrap.Modal.getOrCreateInstance(el);
-      modal?.hide();
+    if (this.externalUsername) {
+      if (this.InterestsForm.valid) {
+        const name = this.InterestsForm.value.name;
+        const category_id = this.InterestsForm.value.category_id;
+        const user_id = this.externalUsername;
+        this.arrInterests.push({ name, category_id, user_id });
+        this.OnSaveInterest(1);
+        this.InterestsForm.reset();
+        const el = this.modalInterst.nativeElement;
+        const modal = (window as any).bootstrap.Modal.getOrCreateInstance(el);
+        modal?.hide();
+      } else {
+        console.log('InterestsForm is invalid');
+      }
     } else {
-      console.log('InterestsForm is invalid');
+      alert('ยังไม่ได้ลงทะเบียน username')
     }
   }
 
@@ -328,19 +341,23 @@ export class AboutMeInfoComponent implements OnInit {
   /* GUILD */
 
   addToGuildList() {
-    if (this.GuildForm.valid) {
-      const name = this.GuildForm.value.name;
-      const category_id = this.GuildForm.value.category_id;
-      const user_id = this.externalUsername;
-      this.arrGuild.push({ name, category_id, user_id });
-      this.OnSaveInterest(2);
-      this.GuildForm.reset();
+    if (this.externalUsername) {
+      if (this.GuildForm.valid) {
+        const name = this.GuildForm.value.name;
+        const category_id = this.GuildForm.value.category_id;
+        const user_id = this.externalUsername;
+        this.arrGuild.push({ name, category_id, user_id });
+        this.OnSaveInterest(2);
+        this.GuildForm.reset();
 
-      const el = this.modalGuld.nativeElement;
-      const modal = (window as any).bootstrap.Modal.getOrCreateInstance(el);
-      modal?.hide();
+        const el = this.modalGuld.nativeElement;
+        const modal = (window as any).bootstrap.Modal.getOrCreateInstance(el);
+        modal?.hide();
+      } else {
+        console.log('GuildFormis invalid');
+      }
     } else {
-      console.log('GuildFormis invalid');
+      alert('ยังไม่ได้ลงทะเบียน username')
     }
   }
 
@@ -386,57 +403,50 @@ export class AboutMeInfoComponent implements OnInit {
   }
 
   OnSaveInterest(category: number) {
-    console.log(category);
 
-    if (this.externalUsername) {
-      if (category === 1) { // Interest
-        if (this.InterestsForm.valid) {
-          this.InterestsForm.patchValue({
-            user_id: this.externalUsername,
-            category_id: 1
-          });
-          const interest: interestsDTO = this.InterestsForm.getRawValue();
+    if (category === 1) { // Interest
+      if (this.InterestsForm.valid) {
+        this.InterestsForm.patchValue({
+          user_id: this.externalUsername,
+          category_id: 1
+        });
+        const interest: interestsDTO = this.InterestsForm.getRawValue();
 
-          this.interestService.createInterest(interest).subscribe({
-            next: (res) => {
-              console.log("Update Interest sucessfully");
-            },
-            error(err) {
-              console.error('Error :', err);
-            },
-            complete() {
-              console.log('Upload complete');
-            },
-          })
-        } else {
-          console.log('form form is invalid');
-        }
+        this.interestService.createInterest(interest).subscribe({
+          next: (res) => {
+            console.log("Update Interest sucessfully");
+          },
+          error(err) {
+            console.error('Error :', err);
+          },
+          complete() {
+            console.log('Upload complete');
+          },
+        })
+      } else {
+        console.log('form form is invalid');
       }
-      if (category === 2) { // Guild
-        if (this.GuildForm.valid) {
-          this.GuildForm.patchValue({
-            user_id: this.externalUsername,
-            category_id: 2
-          });
-          const guild: interestsDTO = this.GuildForm.getRawValue();
+    }
+    if (category === 2) { // Guild
+      if (this.GuildForm.valid) {
+        this.GuildForm.patchValue({
+          user_id: this.externalUsername,
+          category_id: 2
+        });
+        const guild: interestsDTO = this.GuildForm.getRawValue();
 
-          this.interestService.createInterest(guild).subscribe({
-            next: (res) => {
-              console.log("Update Guild sucessfully");
-            },
-            error(err) {
-              console.error('Error :', err);
-            },
-            complete() {
-              console.log('Upload complete');
-            },
-          })
-        } else {
-          console.log('form form is invalid');
-        }
+        this.interestService.createInterest(guild).subscribe({
+          next: (res) => {
+            console.log("Update Guild sucessfully");
+          },
+          error(err) {
+            console.error('Error :', err);
+          },
+          complete() {
+            console.log('Upload complete');
+          },
+        })
       }
-    } else {
-      alert('ยังไม่ได้ลงทะเบียน username')
     }
   }
 }

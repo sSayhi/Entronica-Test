@@ -50,7 +50,7 @@ export class ContactService {
     try {
       console.info("ContactService -> editContact running...");
       const generateQuery: SqlDto = {
-        fromTable: 'public."Contacts"',
+        fromTable: 'public.contact',
         whereColumn: `user_id = '${contact.user_id}'`,
         values: `address = '${contact.address}', sub_district = '${contact.sub_district}', district = '${contact.district}', province = '${contact.province}', postal_code = '${contact.postal_code}', facebook = '${contact.facebook}', line_id = '${contact.line_id}', instagram = '${contact.instagram}'`,
       };

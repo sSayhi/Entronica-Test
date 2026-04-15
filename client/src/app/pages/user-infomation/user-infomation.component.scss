@@ -149,6 +149,12 @@
   cursor: not-allowed;
 }
 
+.readonly-btn {
+  pointer-events: none;
+  color: #333333 !important;
+  cursor: default;
+}
+
 .footter-form {
   display: flex;
   flex-direction: row;

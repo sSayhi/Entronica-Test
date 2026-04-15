@@ -41,28 +41,6 @@ export class Skillervice {
     }
   }
 
-  async editSkillInfo(skill: SkillDto) {
-    const queryRunner = db.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-    const manager = db.manager;
-    try {
-      console.info("Skillervice -> editSkillInfo running...");
-      const generateQuery: SqlDto = {
-        fromTable: 'public.skill',
-        whereColumn: `user_id = '${skill.user_id}' AND skill = '${skill.skill}'`,
-        values: `level = '${skill.level}'`,
-      };
-      const result = await this.repository.Edit(manager, generateQuery);
-      await queryRunner.commitTransaction();
-      return result;
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
-      console.error("Skillervice -> editSkillInfo error: ", error);
-      throw error;
-    }
-  }
-
   async deleteSkillInfo(skill: SkillDto) {
     const queryRunner = db.createQueryRunner();
     await queryRunner.connect();

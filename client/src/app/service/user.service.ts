@@ -12,10 +12,11 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   createUserProfile(file : FormData ): Observable<any> {
-    const form = new FormData();
-    // files.forEach((f) => form.append('files', f, f.name));
-    // const body = {Ticket : Ticket,DatetimeLog : DatetimeLog ,files : form}
     return this.http.post(`${environment.apiUrl}/UserSvc/CreateProfile`, file);
+  }
+
+  editUserProfile(file : FormData ): Observable<any> {
+    return this.http.put(`${environment.apiUrl}/UserSvc/UpdateProfile`, file);
   }
 
   getListData(): Observable<any> {

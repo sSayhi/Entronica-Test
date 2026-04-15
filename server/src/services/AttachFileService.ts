@@ -4,6 +4,7 @@ import { SqlDto } from "../models/buildSql";
 import db from "../configs/postgres";
 import { User_ImagesDTO } from "../models/user_images.dto";
 import { EntityManager } from "typeorm";
+import fs from 'fs/promises';
 import path from "path";
 import { path_DIR } from "../middlewares/multer";
 
@@ -16,7 +17,7 @@ export class AttachmentService {
         return `/uploads/${relFromUploads}`.replace(/\\/g, "/");
     }
 
-    async acttchFile(manager: EntityManager, files : Express.Multer.File, UserId: string , Category : number) {
+    async acttchFile(manager: EntityManager, files: Express.Multer.File, UserId: string, Category: number) {
         try {
             console.info("AttachmentService -> acttchFile running...");
             const newFile: User_ImagesDTO = {
@@ -25,6 +26,16 @@ export class AttachmentService {
                 file_path: this.toWebPath(files.destination),
                 username_id: UserId
             };
+
+            const findId = this.getFileByUsername(UserId, Category);
+            console.log((await findId).data);
+            
+            if ((await findId).data.length > 0) {
+                const path = `../assets/${(await findId).data.file_path}/${(await findId).data.file_name}`
+                
+                await this.deleteFile(path)
+                await this.deletePhoto(UserId, Category)
+            }
 
             const generateQuery: SqlDto = {
                 fromTable: 'public.user_images',
@@ -43,18 +54,49 @@ export class AttachmentService {
         }
     }
 
-    async getFileByTicket(UserId: number) {
+    async getFileByUsername(UserId: string, category: number) {
         try {
             const generateQuery: SqlDto = {
                 columnSelect: "img_category, file_path, file_name",
-                fromTable: 'public."user_images"',
-                whereColumn: `user_id = ${UserId}`,
+                fromTable: 'public.user_images',
+                whereColumn: `username_id = '${UserId}' AND img_category = '${category}'`,
             };
             const result = await this.repository.select(generateQuery);
             return { data: result, status: 'IsOk' };
         } catch (error) {
-            console.error("categoryInfoService -> editCategoryInfo error: ", error);
+            console.error("AttachmentService -> getFileByUsername error: ", error);
             throw error;
+        }
+    }
+
+    async deletePhoto(UserId: string, category: number) {
+        const queryRunner = db.createQueryRunner();
+        await queryRunner.connect();
+        await queryRunner.startTransaction();
+        const manager = db.manager;
+        try {
+            console.info("AttachmentService -> deletePhoto running...");
+            const generateQuery: SqlDto = {
+                fromTable: 'public.user_images',
+                whereColumn: `username_id = '${UserId}' AND img_category = '${category}'`,
+            };
+            const result = await this.repository.remove(manager, generateQuery);
+            await queryRunner.commitTransaction();
+            return result;
+
+        } catch (error) {
+            console.error("AttachmentService -> deletePhoto error: ", error);
+            await queryRunner.rollbackTransaction();
+            throw error;
+        }
+    }
+
+    async deleteFile(filename: string) {
+        try {
+            const filePath = path.join(__dirname, 'assets', filename); 
+            await fs.unlink(filePath);
+        } catch (err) {
+            console.error('error:', err);
         }
     }
 }

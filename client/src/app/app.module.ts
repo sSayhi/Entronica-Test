@@ -11,6 +11,7 @@ import { RouterModule , Router } from '@angular/router';
 import { AboutMeInfoComponent } from './pages/about-me-info/about-me-info.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ListUserComponent } from './pages/list-user/list-user.component';
+import { InformationComponent } from './pages/information/information.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ListUserComponent } from './pages/list-user/list-user.component';
     ContactInfomationComponent,
     SideBarComponent,
     AboutMeInfoComponent,
-    ListUserComponent
+    ListUserComponent,
+    InformationComponent
   ],
   imports: [
     BrowserModule,

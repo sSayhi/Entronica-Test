@@ -14,6 +14,7 @@ export class UserService {
     const generateQuery: SqlDto = {
       columnSelect: "*",
       fromTable: 'public."User"',
+      orderBy : 'key_id asc'
     };
     const result = await this.repository.select(generateQuery);
     return result;
@@ -23,7 +24,7 @@ export class UserService {
     const generateQuery: SqlDto = {
       columnSelect: 'key_id, username, nickname, firstname, lastname, "position", nationality, phone, start_date, created_at , ui.file_path , ui.file_name ,ui.img_category',
       fromTable: 'public."User" u',
-      joinset : 'left join public.user_images ui  on u.username = ui.username_id ',
+      joinset: 'left join public.user_images ui  on u.username = ui.username_id ',
       whereColumn: `username = '${username}'`,
     };
     const result = await this.repository.select(generateQuery);
@@ -60,7 +61,7 @@ export class UserService {
     }
   }
 
-  async editUserInfo(User: UserDTO) {
+  async editUserInfo(User: UserDTO, files: Express.Multer.File[], Category: any) {
     const queryRunner = db.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -73,6 +74,12 @@ export class UserService {
         values: `nickname = '${User.nickname}', firstname = '${User.firstname}', lastname = '${User.lastname}', position = '${User.position}', nationality = '${User.nationality}', phone = '${User.phone}', start_date = '${User.start_date}'`,
       };
       const result = await this.repository.Edit(manager, generateQuery);
+      if (Array.isArray(files) && files.length > 0) {
+        const uploadPromises = files.map((file, index) =>
+          this.attachmentService.acttchFile(queryRunner.manager, file, User.username, Category[index])
+        );
+        await Promise.all(uploadPromises);
+      }
       await queryRunner.commitTransaction();
       return result;
     } catch (error) {
